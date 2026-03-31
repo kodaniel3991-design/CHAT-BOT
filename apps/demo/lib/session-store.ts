@@ -4,7 +4,7 @@ import { RedisSessionStore } from "./redis-session-store";
 import { getUpstashRedis } from "./redis";
 import { DbSessionStore } from "./db-session-store";
 
-function useDb(): boolean {
+function isDbEnabled(): boolean {
   return !!process.env.DATABASE_URL || !!process.env.DIRECT_URL;
 }
 
@@ -21,7 +21,7 @@ const fallbackStore: ISessionHistoryStore = (() => {
  * 그 외 → Redis 또는 인메모리
  */
 export function getSessionStore(projectId?: string): ISessionHistoryStore {
-  if (useDb()) {
+  if (isDbEnabled()) {
     try {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       const { prisma } = require("./db");

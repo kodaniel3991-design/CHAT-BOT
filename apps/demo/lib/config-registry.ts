@@ -30,7 +30,7 @@ function applyEntries(entries: ServiceEntry[]) {
 }
 
 /* ─── DB mode detection ─── */
-function useDb(): boolean {
+function isDbEnabled(): boolean {
   return !!process.env.DATABASE_URL || !!process.env.DIRECT_URL;
 }
 
@@ -104,7 +104,7 @@ export function reloadConfigs(): { ok: boolean; projects: string[] } {
 
 /** 비동기 리로드 (DB 우선) */
 export async function reloadConfigsAsync(): Promise<{ ok: boolean; projects: string[] }> {
-  if (useDb()) {
+  if (isDbEnabled()) {
     const ok = await loadFromDb();
     if (ok) return { ok, projects: Object.keys(byProjectId) };
   }
@@ -124,7 +124,7 @@ export async function addServiceEntry(
     return { ok: false, error: "DUPLICATE_ID", projects: Object.keys(byProjectId) };
   }
 
-  if (useDb()) {
+  if (isDbEnabled()) {
     try {
       const { prisma } = require("./db");
       if (!prisma) throw new Error("DB not available");
@@ -161,7 +161,7 @@ export async function updateServiceEntry(
     return { ok: false, error: "NOT_FOUND", projects: Object.keys(byProjectId) };
   }
 
-  if (useDb()) {
+  if (isDbEnabled()) {
     try {
       const { prisma } = require("./db");
       if (!prisma) throw new Error("DB not available");
@@ -198,7 +198,7 @@ export async function deleteServiceEntry(
     return { ok: false, error: "NOT_FOUND", projects: Object.keys(byProjectId) };
   }
 
-  if (useDb()) {
+  if (isDbEnabled()) {
     try {
       const { prisma } = require("./db");
       if (!prisma) throw new Error("DB not available");
