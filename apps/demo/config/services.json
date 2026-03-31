@@ -6,8 +6,8 @@
     "config": {
       "projectId": "esg-on",
       "llm": {
-        "provider": "anthropic",
-        "model": "claude-sonnet-4-20250514",
+        "provider": "openai",
+        "model": "gpt-4o-mini",
         "maxTokens": 2048,
         "temperature": 0.3
       },
@@ -143,8 +143,8 @@
     "config": {
       "projectId": "mes-on",
       "llm": {
-        "provider": "anthropic",
-        "model": "claude-sonnet-4-20250514",
+        "provider": "openai",
+        "model": "gpt-4o-mini",
         "maxTokens": 2048,
         "temperature": 0.35
       },
