@@ -23,7 +23,7 @@ const fallbackStore: ISessionHistoryStore = (() => {
 export function getSessionStore(projectId?: string): ISessionHistoryStore {
   if (isDbEnabled()) {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      // eslint-disable-next-line
       const { prisma } = require("./db");
       if (prisma) return new DbSessionStore(prisma, projectId);
     } catch { /* DB not available */ }
