@@ -1,0 +1,95 @@
+[
+  {
+    "id": "esg-on",
+    "label": "ESG_On",
+    "description": "ESG Management",
+    "config": {
+      "projectId": "esg-on",
+      "llm": {
+        "provider": "openai",
+        "model": "claude-sonnet-4-20250514",
+        "maxTokens": 2048,
+        "temperature": 0.3
+      },
+      "systemPrompt": "당신은 ESG 배출량 산출 SaaS(ESG_On)의 AI 어시스턴트입니다.\n- Scope 1/2/3, 활동자료, 배출계수, 보고서 항목에 대해 안내합니다.\n- 법규·고객사 내부 기준은 확정되지 않은 경우 단정하지 말고 확인 질문을 합니다.\n- 사용자가 배출계수를 물으면 lookupEmissionFactor 도구를 사용하세요.\n- 사용자가 보고서 생성을 요청하면 exportReportDraft 도구를 사용하세요.",
+      "conversation": {
+        "maxHistoryLength": 12,
+        "sessionTimeout": 1800000,
+        "historyStrategy": "sliding",
+        "welcomeMessage": "안녕하세요. ESG 배출량·활동자료·보고 항목 관련 질문을 도와드릴게요."
+      },
+      "ui": {
+        "theme": "light",
+        "botName": "ESG_On 어시스턴트",
+        "position": "bottom-right",
+        "placeholder": "예: Scope 2 배출계수 조회, 보고서 초안 생성…",
+        "allowFileAttachment": true
+      },
+      "rag": {
+        "enabled": true,
+        "vectorDbNamespace": "esg-on-docs",
+        "topK": 6,
+        "minScore": 0.72
+      },
+      "tools": [
+        {
+          "name": "lookupEmissionFactor",
+          "description": "Scope별 배출계수를 조회합니다. scope(1,2,3)과 category(선택)로 필터링합니다.",
+          "endpoint": "http://localhost:3000/api/mock-tools/emission-factor",
+          "method": "GET",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "scope": {
+                "type": "string",
+                "description": "배출 Scope (1, 2, 3)",
+                "enum": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              },
+              "category": {
+                "type": "string",
+                "description": "배출원 카테고리 (선택, 예: 경유, 전력)"
+              }
+            },
+            "required": [
+              "scope"
+            ]
+          }
+        },
+        {
+          "name": "exportReportDraft",
+          "description": "ESG 배출량 보고서 초안을 생성합니다.",
+          "endpoint": "http://localhost:3000/api/mock-tools/report",
+          "method": "POST",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "보고서 제목"
+              },
+              "period": {
+                "type": "string",
+                "description": "보고 기간 (예: 2024-Q4)"
+              }
+            },
+            "required": [
+              "title",
+              "period"
+            ]
+          },
+          "confirmRequired": true
+        }
+      ],
+      "features": {
+        "feedback": true,
+        "exportHistory": true,
+        "fileAttachment": true,
+        "streaming": true
+      }
+    }
+  }
+]

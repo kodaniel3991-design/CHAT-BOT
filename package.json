@@ -1,0 +1,19 @@
+{
+  "name": "luon-chatbot-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w demo",
+    "dev:test-client": "npm run dev -w test-client",
+    "build": "npm run build:packages && npm run build -w demo",
+    "build:packages": "npm run build -w @company/chatbot-core && npm run build -w @company/chatbot-service-kit && npm run build -w @company/chatbot-ui",
+    "lint": "npm run lint -w demo",
+    "test": "npm run test -w @company/chatbot-core && npm run test -w @company/chatbot-service-kit && npm run test -w @company/chatbot-ui && npm run test -w demo"
+  },
+  "devDependencies": {
+    "typescript": "~5.6.3"
+  }
+}

@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── 서비스 설정 ───
+model Service {
+  id          String   @id // "esg-on", "mes-on" 등
+  label       String
+  description String?
+  config      Json     // ChatbotConfig 전체를 JSON으로 저장
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  conversations Conversation[]
+  toolLogs      ToolLog[]
+}
+
+// ─── 대화 메시지 ───
+model Conversation {
+  id        String   @id @default(uuid())
+  sessionId String
+  projectId String
+  role      String   // "user" | "assistant" | "tool"
+  content   String
+  createdAt DateTime @default(now())
+
+  service Service @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, projectId])
+  @@index([projectId, createdAt])
+}
+
+// ─── 사용자 피드백 ───
+model Feedback {
+  id        String   @id @default(uuid())
+  sessionId String
+  projectId String
+  messageId String
+  feedback  String   // "up" | "down"
+  createdAt DateTime @default(now())
+
+  @@index([projectId])
+  @@index([sessionId])
+}
+
+// ─── Tool 실행 로그 ───
+model ToolLog {
+  id        String   @id @default(uuid())
+  projectId String
+  sessionId String
+  toolName  String
+  endpoint  String
+  method    String
+  status    Int      // HTTP 상태 코드
+  elapsed   Int      // 실행 시간 (ms)
+  request   Json?    // 요청 args
+  response  Json?    // 응답 body
+  error     String?
+  createdAt DateTime @default(now())
+
+  service Service @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, createdAt])
+  @@index([toolName])
+}
+
+// ─── 일별 사용 통계 ───
+model UsageStat {
+  id        String   @id @default(uuid())
+  projectId String
+  date      DateTime @db.Date
+  requests  Int      @default(0)
+  tokens    Int      @default(0)
+  toolCalls Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@unique([projectId, date])
+  @@index([projectId])
+}

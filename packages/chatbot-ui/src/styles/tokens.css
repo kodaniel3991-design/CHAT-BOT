@@ -1,0 +1,105 @@
+/* LUON AI Design System — Taupe + Soft Green (subset for chatbot) */
+:root {
+  --taupe-50: #f5f0ec;
+  --taupe-100: #e8ddd6;
+  --taupe-200: #d4c0b3;
+  --taupe-300: #bfa091;
+  --taupe-400: #8a6e62;
+  --taupe-500: #554940;
+  --taupe-600: #433a33;
+  --taupe-800: #1f1b18;
+
+  --green-50: #f0f3ee;
+  --green-200: #bbc9b3;
+  --green-400: #879a77;
+  --green-500: #6e8060;
+  --green-600: #55654a;
+  --green-700: #3d4a35;
+
+  --gray-100: #eceae7;
+  --gray-200: #dddbd7;
+  --gray-300: #c5c6c7;
+  --gray-400: #a8a9aa;
+  --gray-500: #73787c;
+
+  --color-success: #879a77;
+  --color-warning: #c9ad93;
+  --color-error: #dc2626;
+  --color-info: #d7e5f0;
+
+  --bg-page: #f5f4f2;
+  --bg-surface: #ffffff;
+  --bg-subtle: #eceae7;
+
+  --text-primary: #000000;
+  --text-secondary: #73787c;
+  --text-tertiary: #a8a9aa;
+  --text-inverse: #ffffff;
+  --text-brand: #554940;
+  --text-accent: #879a77;
+
+  --border-subtle: #dddbd7;
+  --border-default: #c5c6c7;
+  --border-strong: #a8a9aa;
+  --border-brand: #554940;
+  --border-accent: #879a77;
+
+  --dark-bg: #2b2b2b;
+  --dark-surface: #333333;
+  --dark-border: #444444;
+  --dark-text-primary: #ffffff;
+  --dark-text-secondary: #d4d4d4;
+  --dark-text-tertiary: #b3b3b3;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(85, 73, 64, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(85, 73, 64, 0.12), 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 12px 32px rgba(85, 73, 64, 0.16), 0 4px 8px rgba(0, 0, 0, 0.06);
+  --shadow-xl: 0 24px 64px rgba(85, 73, 64, 0.2), 0 8px 16px rgba(0, 0, 0, 0.08);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  --font-display: "Sora", "Pretendard", sans-serif;
+  --font-body: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "DM Mono", monospace;
+
+  --ease-default: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+
+  --primary: var(--taupe-500);
+  --primary-foreground: white;
+  --secondary: var(--green-50);
+  --secondary-foreground: var(--green-700);
+  --accent: var(--bg-subtle);
+  --accent-foreground: var(--text-primary);
+  --destructive: var(--color-error);
+  --border: var(--border-default);
+  --ring: var(--taupe-500);
+  --radius: var(--radius-sm);
+  --background: var(--bg-surface);
+  --foreground: var(--text-primary);
+  --muted: var(--bg-subtle);
+  --muted-foreground: var(--text-secondary);
+}
+
+.dark {
+  --background: var(--dark-surface);
+  --foreground: var(--dark-text-primary);
+  --border: var(--dark-border);
+  --muted: var(--dark-bg);
+  --muted-foreground: var(--dark-text-secondary);
+}

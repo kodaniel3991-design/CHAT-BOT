@@ -1,0 +1,23 @@
+node_modules
+.next
+dist
+.turbo
+*.log
+.env*.local
+.DS_Store
+
+# IDE
+.vscode
+.idea
+
+# Build artifacts
+*.tsbuildinfo
+coverage
+
+# Prisma
+apps/demo/lib/generated
+.env
+
+# Large files
+*.pdf
+design-system_v3.html
