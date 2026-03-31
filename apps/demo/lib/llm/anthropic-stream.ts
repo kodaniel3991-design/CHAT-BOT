@@ -164,17 +164,21 @@ async function streamWithToolLoop(
   );
 
   // assistant 메시지 (tool_use 포함)를 messages에 추가
-  const assistantContent = final.content.map((block) => {
-    if (block.type === "text") {
-      return { type: "text" as const, text: block.text };
-    }
-    return {
-      type: "tool_use" as const,
-      id: block.id,
-      name: (block as { name: string }).name,
-      input: (block as { input: unknown }).input,
-    };
-  });
+  const assistantContent = final.content
+    .filter((block) => block.type === "text" || block.type === "tool_use")
+    .map((block) => {
+      if (block.type === "text") {
+        return { type: "text" as const, text: block.text };
+      }
+      // tool_use block
+      const tb = block as { type: "tool_use"; id: string; name: string; input: unknown };
+      return {
+        type: "tool_use" as const,
+        id: tb.id,
+        name: tb.name,
+        input: tb.input,
+      };
+    });
 
   const updatedMessages: MessageParam[] = [
     ...messages,
