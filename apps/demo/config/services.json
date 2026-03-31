@@ -2,11 +2,11 @@
   {
     "id": "esg-on",
     "label": "ESG_On",
-    "description": "ESG Management",
+    "description": "ESG 배출량 산출",
     "config": {
       "projectId": "esg-on",
       "llm": {
-        "provider": "openai",
+        "provider": "anthropic",
         "model": "claude-sonnet-4-20250514",
         "maxTokens": 2048,
         "temperature": 0.3
@@ -40,23 +40,10 @@
           "parameters": {
             "type": "object",
             "properties": {
-              "scope": {
-                "type": "string",
-                "description": "배출 Scope (1, 2, 3)",
-                "enum": [
-                  "1",
-                  "2",
-                  "3"
-                ]
-              },
-              "category": {
-                "type": "string",
-                "description": "배출원 카테고리 (선택, 예: 경유, 전력)"
-              }
+              "scope": { "type": "string", "description": "배출 Scope (1, 2, 3)", "enum": ["1", "2", "3"] },
+              "category": { "type": "string", "description": "배출원 카테고리 (선택, 예: 경유, 전력)" }
             },
-            "required": [
-              "scope"
-            ]
+            "required": ["scope"]
           }
         },
         {
@@ -67,19 +54,10 @@
           "parameters": {
             "type": "object",
             "properties": {
-              "title": {
-                "type": "string",
-                "description": "보고서 제목"
-              },
-              "period": {
-                "type": "string",
-                "description": "보고 기간 (예: 2024-Q4)"
-              }
+              "title": { "type": "string", "description": "보고서 제목" },
+              "period": { "type": "string", "description": "보고 기간 (예: 2024-Q4)" }
             },
-            "required": [
-              "title",
-              "period"
-            ]
+            "required": ["title", "period"]
           },
           "confirmRequired": true
         }
@@ -88,6 +66,72 @@
         "feedback": true,
         "exportHistory": true,
         "fileAttachment": true,
+        "streaming": true
+      }
+    }
+  },
+  {
+    "id": "mes-on",
+    "label": "MES_On",
+    "description": "제조 실행",
+    "config": {
+      "projectId": "mes-on",
+      "llm": {
+        "provider": "anthropic",
+        "model": "claude-sonnet-4-20250514",
+        "maxTokens": 2048,
+        "temperature": 0.35
+      },
+      "systemPrompt": "당신은 제조 실행 시스템(MES) SaaS(MES_On)의 AI 어시스턴트입니다.\n- 작업지시, 공정, 설비, 실적·불량·다운타임 조회 흐름을 안내합니다.\n- 실제 설비 제어·데이터 변경은 권한과 확인 절차가 필요함을 안내합니다.\n- 사용자가 작업지시를 물으면 queryWorkOrders 도구를 사용하세요.\n- 사용자가 설비 가동률/OEE를 물으면 queryOeeSnapshot 도구를 사용하세요.",
+      "conversation": {
+        "maxHistoryLength": 15,
+        "sessionTimeout": 2880000,
+        "historyStrategy": "sliding",
+        "welcomeMessage": "안녕하세요. 생산 실적, 작업지시, 설비 상태 관련 질문을 도와드릴게요."
+      },
+      "ui": {
+        "theme": "auto",
+        "botName": "MES_On 어시스턴트",
+        "position": "bottom-right",
+        "placeholder": "예: 오늘 라인 가동률, 작업지시 상태…",
+        "allowFileAttachment": false
+      },
+      "rag": {
+        "enabled": true,
+        "vectorDbNamespace": "mes-on-docs",
+        "topK": 6,
+        "minScore": 0.7
+      },
+      "tools": [
+        {
+          "name": "queryWorkOrders",
+          "description": "라인별/상태별 작업지시 목록을 조회합니다.",
+          "endpoint": "http://localhost:3000/api/mock-tools/work-orders",
+          "method": "GET",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "line": { "type": "string", "description": "생산 라인 (예: LINE-A, LINE-B)" },
+              "status": { "type": "string", "description": "작업 상태", "enum": ["waiting", "in_progress", "completed"] }
+            }
+          }
+        },
+        {
+          "name": "queryOeeSnapshot",
+          "description": "설비 가동률(OEE) 실시간 스냅샷을 조회합니다.",
+          "endpoint": "http://localhost:3000/api/mock-tools/oee-snapshot",
+          "method": "GET",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "line": { "type": "string", "description": "라인 필터 (비우면 전체)" }
+            }
+          }
+        }
+      ],
+      "features": {
+        "feedback": true,
+        "exportHistory": true,
         "streaming": true
       }
     }
