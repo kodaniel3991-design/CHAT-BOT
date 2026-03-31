@@ -21,7 +21,7 @@
       "ui": {
         "theme": "light",
         "botName": "ESG_On 어시스턴트",
-        "position": "bottom-right",
+        "position": "bottom-left",
         "placeholder": "예: Scope 2 배출계수 조회, 보고서 초안 생성…",
         "allowFileAttachment": true
       },
